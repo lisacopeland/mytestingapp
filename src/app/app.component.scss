@@ -1,0 +1,25 @@
+.dogcard {
+    display: flex;
+    flex-direction: column;
+}
+
+.dogframe {
+    height: 500px;
+}
+
+.dogimage {
+    height: 500px;
+/*     aspect-ratio: 16 / 9; */
+}
+
+.button-row {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.dogbutton {
+    width: 200px;
+    height: 50px;
+}

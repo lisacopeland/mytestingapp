@@ -1,8 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 import { AppComponent } from './app.component';
+import { DogResponse, DogsService } from './dogs.service';
 
 describe('AppComponent', () => {
+  const mockDogResponse: DogResponse = {
+    message: 'test',
+    status: 'success'
+  }
+  let mockDogService: jasmine.SpyObj<DogsService>;
+  mockDogService = jasmine.createSpyObj('DogService', ['get']);      
+  mockDogService.get.and.returnValue(of(mockDogResponse));
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -11,6 +20,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [
+        { provide: DogsService, useValue: mockDogService }
+      ]
     }).compileComponents();
   });
 
@@ -30,6 +42,24 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('mytestingapp app is running!');
+    expect(compiled.querySelector('.title')?.textContent).toContain('Dog Picture');
+  });
+  it('should get a dog object', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    component.getDogImage();
+    expect(component.dogImageUrl).toBe('test');
+  });
+
+  it('Clicking the button should call getDogImage', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const dogbutton = fixture.debugElement.nativeElement.querySelector('#submitdog');
+    dogbutton.click();
+    const component = fixture.componentInstance;
+    expect(component.dogImageUrl).toBe('test');
+
+  
   });
 });
