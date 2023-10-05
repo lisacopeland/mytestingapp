@@ -1,10 +1,22 @@
-<div class="dogcard">
-  <h1 class="title">Dog Picture</h1>
-  <div class="dogframe">
-<img class="dogimage" [src]="dogImageUrl"> 
+<div clas="layout">
+    <div class="header">
+        <h2>
+            My Dog App
+        </h2>
+        <div class="button-section">
+            <div>
+                User is {{loginStatus}}
+            </div>
+            <button class="button-style" (click)="onButtonPress()">
+                {{buttonLabel}}
+            </button>
+            <button *ngIf="loginStatus === 'Logged in'" class="button-style" (click)="onChangePassword()">
+                Change Password
+            </button>
+        </div>
+    </div>
+    <div *ngIf="authErrorMessage">
+        {{authErrorMessage}}
+    </div>
+    <router-outlet></router-outlet>
 </div>
-<div class="button-row">
-<button id="submitdog" class="dogbutton" (click)="getDogImage()">Get Another Picture</button>
-</div>
-</div>
-<router-outlet></router-outlet>

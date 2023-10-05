@@ -1,6 +1,13 @@
-<form [formGroup]="loginForm" id="loginForm" (ngSubmit)="onSubmit()">
-  <input id="username" type="text" formControlName="username" placeholder="User name" />
-  <input id="password" type="password" formControlName="password" placeholder="Password" />
-  <button [disabled]="!loginForm.valid" id="submit" type="submit">Submit</button>
+<div class="login-card">
+  <div style="margin: 20px 0px;">
+    Login to the app
+  </div>
+  <form [formGroup]="loginForm" id="loginForm" (ngSubmit)="onSubmit()">
+    <div class="login-form">
 
-</form>
+      <input id="username" class="input-field" type="text" formControlName="username" placeholder="User name" />
+      <input id="password" class="input-field" type="password" formControlName="password" placeholder="Password" />
+      <button class="submit-button" [disabled]="!loginForm.valid" id="submit" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
