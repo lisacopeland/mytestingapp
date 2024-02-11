@@ -8,6 +8,14 @@ export const setUserAction = createAction(
   'Auth: Set User',
   props<{ payload: { email: string } }>()
 );
+export const loadInitialPassword = createAction(
+  'Auth: Get current password from local storage',
+  props<{ payload: {} }>()
+);
+export const setPassword = createAction(
+  'Auth: setPassword',
+  props<{ payload: { password: string } }>()
+);
 export const changePasswordAction = createAction(
   'Auth: Change Password',
   props<{ payload: { password: string } }>()

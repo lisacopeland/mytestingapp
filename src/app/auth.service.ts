@@ -17,15 +17,6 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   signIn(email: string, password: string) {
-    const authenticationDetails = {
-      Username: email,
-      Password: password,
-      Email: email,
-    };
-
-    const url = `${this.apiUrl}/signin`;
-    console.log('going to url ', url, 'search: ', authenticationDetails);
-    const params = new HttpParams({ fromObject: authenticationDetails });
     return of(password);
   }
 
@@ -39,6 +30,17 @@ export class AuthService {
     console.log('going to url ', url, 'search: ', authenticationDetails);
     const params = new HttpParams({ fromObject: authenticationDetails });
     return this.http.post<string>(url, { params });
+  }
+
+  changePassword(password: string) {
+    console.log('hi from changepassword');
+    localStorage.setItem('password', password);
+    return of(password);
+  }
+
+  getPassword() {
+    console.log('hi from getpassword');
+    return of(localStorage.getItem('password'));
   }
 
   refreshToken() {

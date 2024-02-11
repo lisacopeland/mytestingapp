@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectAuthError, selectUserLoggedIn } from './+state/auth.reducers';
-import { logOutUserAction } from './+state/auth.actions';
+import {
+  defaultPassword,
+  selectAuthError,
+  selectUserLoggedIn,
+  selectUserPassword,
+} from './+state/auth.reducers';
+import {
+  changePasswordAction,
+  loadInitialPassword,
+  logOutUserAction,
+} from './+state/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +27,19 @@ export class AppComponent implements OnInit {
   constructor(private store: Store, private router: Router) {}
 
   ngOnInit(): void {
-    this.store.dispatch(logOutUserAction({ payload: {} }));
+    localStorage.setItem('password', defaultPassword);
+    // this.store.dispatch(loadInitialPassword({ payload: {} }));
+    /*     this.store.select(selectUserPassword).subscribe((password) => {
+      if (password === null || password === '') {
+        this.store.dispatch(
+          changePasswordAction({
+            payload: {
+              password: defaultPassword
+            },
+          })
+        );
+      }
+    }) */
     this.store.select(selectUserLoggedIn).subscribe((loggedIn) => {
       this.loginStatus = loggedIn ? 'Logged in' : 'Logged out';
       this.buttonLabel = loggedIn ? 'Log out' : 'Log in';
@@ -32,6 +53,9 @@ export class AppComponent implements OnInit {
       console.log('got an error ', errorMessage);
       this.authErrorMessage = errorMessage;
       this.router.navigate(['/signin']);
+    });
+    this.store.select(selectUserPassword).subscribe((password) => {
+      console.log('password changed!, ', password);
     });
   }
 

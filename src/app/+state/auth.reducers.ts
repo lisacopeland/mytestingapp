@@ -9,11 +9,14 @@ import {
   loginAction,
   logOutUserAction,
   setAuthErrorAction,
+  setPassword,
   setUserAction,
   signupUserAction,
   userSignedupAction,
 } from './auth.actions';
 
+export const defaultPassword = 'test123';
+export const AUTH_FEATURE_KEY = 'auth';
 export interface AuthState {
   email: string;
   authError: string;
@@ -25,10 +28,8 @@ const initialState: AuthState = {
   email: null,
   authError: null,
   userLoggedIn: false,
-  currentPassword: 'test123',
+  currentPassword: defaultPassword,
 };
-
-export const AUTH_FEATURE_KEY = 'auth';
 
 export const authReducer = createReducer(
   initialState,
@@ -46,11 +47,8 @@ export const authReducer = createReducer(
     };
     return newState;
   }),
-  on(changePasswordAction, (state, action) => {
-    const newState = {
-      ...state,
-      currentPassword: action.payload.password,
-    };
+  on(setPassword, (state, action) => {
+    const newState = { ...state, currentPassword: action.payload.password };
     return newState;
   }),
   on(setAuthErrorAction, (state, action) => {

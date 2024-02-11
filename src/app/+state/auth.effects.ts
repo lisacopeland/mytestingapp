@@ -3,17 +3,20 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from '../auth.service';
 import { mergeMap, map, withLatestFrom, switchMap } from 'rxjs';
 import {
+  changePasswordAction,
   checkLoginState,
   confirmSignupUserAction,
+  loadInitialPassword,
   loginAction,
   logOutUserAction,
   setAuthErrorAction,
+  setPassword,
   setUserAction,
   signedupConfirmedAction,
   signupUserAction,
   userSignedupAction,
 } from './auth.actions';
-import { selectUserPassword } from './auth.reducers';
+import { defaultPassword, selectUserPassword } from './auth.reducers';
 import { Store } from '@ngrx/store';
 
 @Injectable()
@@ -48,6 +51,42 @@ export class AuthEffects {
             })
           );
       })
+    )
+  );
+
+  loadInitialPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadInitialPassword),
+      mergeMap((action) => {
+        return this.service.getPassword().pipe(
+          map((response) => {
+            const newPassword =
+              response === null || response === '' ? defaultPassword : response;
+            return setPassword({
+              payload: {
+                password: newPassword,
+              },
+            });
+          })
+        );
+      }, this.concurrentRequests)
+    )
+  );
+
+  setCurrentPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changePasswordAction),
+      mergeMap((action) => {
+        return this.service.changePassword(action.payload.password).pipe(
+          map((response) => {
+            return setPassword({
+              payload: {
+                password: response,
+              },
+            });
+          })
+        );
+      }, this.concurrentRequests)
     )
   );
 
